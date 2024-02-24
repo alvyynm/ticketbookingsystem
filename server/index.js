@@ -6,6 +6,9 @@ const port = process.env.PORT || 4000;
 
 const app = express();
 
+// Parse incoming request bodies in a middleware before handlers
+app.use(bodyParser.json());
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
