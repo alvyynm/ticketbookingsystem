@@ -6,6 +6,9 @@ const port = process.env.PORT || 4000;
 
 const app = express();
 
+// Disable the "X-Powered-By" header
+app.disable("x-powered-by");
+
 // Parse incoming request bodies in a middleware before handlers
 app.use(bodyParser.json());
 
