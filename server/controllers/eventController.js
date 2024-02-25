@@ -22,6 +22,14 @@ const getEventById = (req, res, next) => {
   });
 };
 
+const getEventAttendees = (req, res, next) => {
+  res.status(200).json({
+    status: "success",
+    data: "event attendees data",
+    message: "Event attendees fetched successfully",
+  });
+};
+
 const updateEvent = (req, res, next) => {
   res.status(200).json({
     status: "success",
@@ -43,4 +51,5 @@ module.exports = {
   getEventById,
   updateEvent,
   deleteEvent,
+  getEventAttendees,
 };
