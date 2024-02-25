@@ -3,6 +3,9 @@ const { body } = require("express-validator");
 const eventController = require("../controllers/eventController");
 const router = express.Router();
 
+// GET v1/events/:eventId/attendees
+router.get("/events/:eventId/attendees", eventController.getEventAttendees);
+
 // GET v1/events/eventId
 router.get("/events/:eventId", eventController.getEventById);
 
