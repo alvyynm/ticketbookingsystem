@@ -7,6 +7,7 @@ const port = process.env.PORT || 4000;
 // import routes
 const authRoutes = require("./routes/authRoute");
 const eventRoutes = require("./routes/eventRoute");
+const ticketRoutes = require("./routes/ticketRoute");
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 
 app.use("/v1/auth", authRoutes);
 app.use("/v1", eventRoutes);
+app.use("/v1", ticketRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
