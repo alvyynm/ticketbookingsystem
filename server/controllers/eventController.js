@@ -2,7 +2,7 @@ const getEvents = (req, res, next) => {
   res.status(200).json({
     status: "success",
     data: "event data",
-    message: "Event data fetched successfully",
+    message: "Events data fetched successfully",
   });
 };
 
