@@ -29,6 +29,8 @@
     "mysql2": "^3.9.1",
     "node-cron": "^3.0.3",
     "nodemailer": "^6.9.10",
+    "pg": "^8.11.3",
+    "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.1"
   },
   "devDependencies": {
