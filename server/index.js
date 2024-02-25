@@ -27,6 +27,13 @@ app.get("/", (req, res) => {
 app.use("/v1/auth", authRoutes);
 app.use("/v1", eventRoutes);
 app.use("/v1", ticketRoutes);
+// catch all route for catching unspecificied routes
+app.use("*", (req, res, next) => {
+  res.status(404).json({
+    status: "failed",
+    message: "Route not found, please double check",
+  });
+});
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
