@@ -4,6 +4,9 @@ const cors = require("cors");
 require("dotenv").config();
 const port = process.env.PORT || 4000;
 
+// import routes
+const authRoutes = require("./routes/authRoute");
+
 const app = express();
 
 // Disable the "X-Powered-By" header
@@ -15,6 +18,8 @@ app.use(bodyParser.json());
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+
+app.use("/v1/auth", authRoutes);
 
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`);
