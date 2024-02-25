@@ -13,7 +13,7 @@ router.get("/events", eventController.getEvents);
 router.post("/events", eventController.createEvent);
 
 // PUT v1/events
-router.post("/events", eventController.updateEvent);
+router.put("/events", eventController.updateEvent);
 
 // DELETE v1/events
 router.delete("/events", eventController.deleteEvent);
