@@ -18,7 +18,10 @@ app.disable("x-powered-by");
 app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  res.status(200).json({
+    status: "success",
+    message: "Hello world!",
+  });
 });
 
 app.use("/v1/auth", authRoutes);
