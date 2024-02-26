@@ -2,11 +2,21 @@ const { Event } = require("../db/models");
 const { validationResult } = require("express-validator");
 
 const getEvents = (req, res, next) => {
-  res.status(200).json({
-    status: "success",
-    data: "event data",
-    message: "Events data fetched successfully",
-  });
+  Event.findAll()
+    .then((events) => {
+      res.status(200).json({
+        status: "success",
+        data: events,
+        message: "Events data fetched successfully",
+      });
+    })
+    .catch((error) => {
+      if (!error.statusCode) {
+        error.statusCode = 404;
+      }
+      error.message = "Failed to fetch events data";
+      next();
+    });
 };
 
 const createEvent = (req, res, next) => {
