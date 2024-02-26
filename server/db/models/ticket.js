@@ -37,6 +37,8 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Ticket",
       underscored: true,
+      // explictly declare the table name
+      tableName: "Tickets",
     }
   );
   return Ticket;
