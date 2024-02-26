@@ -37,6 +37,8 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "Event",
       underscored: true,
+      // explictly declare the table name
+      tableName: "Events",
     }
   );
   return Event;
