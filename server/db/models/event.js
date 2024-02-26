@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
       },
       event_name: DataTypes.STRING,
-      event_description: DataTypes.STRING,
+      event_description: DataTypes.TEXT,
       start_date: DataTypes.DATE,
       end_date: DataTypes.DATE,
       max_attendees: DataTypes.INTEGER,
