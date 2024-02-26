@@ -8,6 +8,7 @@ const port = process.env.PORT || 4000;
 const authRoutes = require("./routes/authRoute");
 const eventRoutes = require("./routes/eventRoute");
 const ticketRoutes = require("./routes/ticketRoute");
+const { sequelize } = require("./db/models");
 
 const app = express();
 
@@ -35,6 +36,22 @@ app.use("*", (req, res, next) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
-});
+const connectDb = async () => {
+  console.log("Checking db connection...");
+
+  try {
+    await sequelize.authenticate();
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    console.error("Unable to connect to the database:", error);
+    throw error;
+  }
+};
+
+(async () => {
+  await connectDb();
+  console.log("Starting server ...");
+  app.listen(port, () => {
+    console.log(`Server listening on port ${port}`);
+  });
+})();
