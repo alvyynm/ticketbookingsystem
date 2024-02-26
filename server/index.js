@@ -36,6 +36,17 @@ app.use("*", (req, res, next) => {
   });
 });
 
+// error handling middleware
+app.use((error, req, res, next) => {
+  console.log(error);
+  const status = error.statusCode || 500;
+  const message = error.message;
+  const data = error.data;
+  res
+    .status(status)
+    .json({ status: "failed", message: data[0].msg || message, data: [] });
+});
+
 const connectDb = async () => {
   console.log("Checking db connection...");
 
