@@ -56,10 +56,61 @@ const signup = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
-  res.status(200).json({
-    status: "success",
-    message: "Login successful",
-  });
+  const { email, password } = req.body;
+  let loggedInUser;
+
+  User.findOne({
+    where: {
+      user_email: email,
+    },
+  })
+    .then((user) => {
+      if (!user) {
+        const error = new Error(
+          "No account found, please create a new account"
+        );
+        error.statusCode = 404;
+        throw error;
+      }
+      loggedInUser = user;
+      return bcrypt.compare(password, user.user_password);
+    })
+    .then((isEqual) => {
+      if (!isEqual) {
+        const error = new Error("Invalid credentials");
+        error.statusCode = 401;
+        throw error;
+      }
+      // log in the user
+      // create jwt token and return it to the user
+      const token = jwt.sign(
+        {
+          email: loggedInUser.user_email,
+          userId: loggedInUser.id,
+        },
+        secret,
+        {
+          expiresIn: "4h",
+        }
+      );
+      res.status(200).json({
+        status: "success",
+        message: "Login successful!",
+        data: {
+          token: token,
+          user_id: loggedInUser.id,
+          email: loggedInUser.user_email,
+          name: loggedInUser.user_name,
+        },
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      if (!error.statusCode) {
+        error.statusCode = 500;
+      }
+      next(error);
+    });
 };
 
 module.exports = { signup, login };
