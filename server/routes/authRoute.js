@@ -40,5 +40,19 @@ router.post(
 );
 
 // POST v1/auth/login
-router.post("/login", authController.login);
+router.post(
+  "/login",
+  [
+    body("email")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Email is required")
+      .isEmail()
+      .withMessage("Enter a valid email")
+      .normalizeEmail({ gmail_remove_dots: false }),
+    body("password").not().isEmpty().withMessage("Password is required"),
+  ],
+  authController.login
+);
 module.exports = router;

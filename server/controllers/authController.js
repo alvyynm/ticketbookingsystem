@@ -56,6 +56,15 @@ const signup = (req, res, next) => {
 };
 
 const login = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const error = new Error("Invalid credentials");
+    error.statusCode = 400;
+    error.data = errors.array();
+    throw error;
+  }
+
   const { email, password } = req.body;
   let loggedInUser;
 
