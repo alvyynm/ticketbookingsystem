@@ -122,4 +122,17 @@ const login = (req, res, next) => {
     });
 };
 
-module.exports = { signup, login };
+const logout = async (req, res, next) => {
+  res.cookie("token", "", {
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000),
+  });
+
+  return res.status(200).json({
+    status: "success",
+    message: "User successfully logged out",
+    data: {},
+  });
+};
+
+module.exports = { signup, login, logout };
