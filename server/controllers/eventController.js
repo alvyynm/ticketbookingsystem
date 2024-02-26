@@ -65,11 +65,21 @@ const createEvent = (req, res, next) => {
 };
 
 const getEventById = (req, res, next) => {
-  res.status(200).json({
-    status: "success",
-    data: "event data",
-    message: "Event data fetched successfully",
-  });
+  Event.findByPk(req.params.eventId)
+    .then((result) => {
+      res.status(200).json({
+        status: "success",
+        data: result,
+        message: "Event data fetched successfully",
+      });
+    })
+    .catch((error) => {
+      if (!error.statusCode) {
+        error.statusCode = 404;
+      }
+      error.message = "Can't find requested event";
+      next(error);
+    });
 };
 
 const getEventAttendees = (req, res, next) => {
