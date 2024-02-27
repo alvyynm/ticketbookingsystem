@@ -54,9 +54,9 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Maximum attendees is required")
-      .isInt({ min: 10 })
+      .isInt({ min: 2 })
       .withMessage(
-        "Maximum attendees must be a valid integer with a minimum value of 10"
+        "Maximum attendees must be a valid integer with a minimum value of 1"
       ),
     body("ticket_price_vip")
       .trim()
