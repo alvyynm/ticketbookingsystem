@@ -47,7 +47,7 @@ const createEvent = (req, res, next) => {
     max_attendees: max_attendees,
     ticket_price_regular: ticket_price_regular,
     ticket_price_vip: ticket_price_vip,
-    created_by: req.params.id,
+    created_by: req.id,
   })
     .then((result) => {
       res.status(201).json({
