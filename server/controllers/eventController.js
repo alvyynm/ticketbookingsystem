@@ -1,4 +1,4 @@
-const { Event } = require("../db/models");
+const { Event, EventArchive } = require("../db/models");
 const { validationResult } = require("express-validator");
 
 const getEvents = (req, res, next) => {
@@ -47,6 +47,7 @@ const createEvent = (req, res, next) => {
     max_attendees: max_attendees,
     ticket_price_regular: ticket_price_regular,
     ticket_price_vip: ticket_price_vip,
+    created_by: req.id,
   })
     .then((result) => {
       res.status(201).json({
@@ -127,25 +128,61 @@ const updateEvent = (req, res, next) => {
 };
 
 const deleteEvent = (req, res, next) => {
-  Event.destroy({
-    where: {
-      id: req.params.eventId,
-    },
-  })
-    .then((result) => {
-      res.status(200).json({
-        status: "success",
-        message: "Event deleted successfully",
-        data: {
-          deletedItems: result,
+  const eventId = req.params.eventId;
+
+  // first, retrieve the event's data from db
+  Event.findByPk(eventId)
+    .then((eventData) => {
+      Event.destroy({
+        where: {
+          id: eventId,
         },
-      });
+      })
+        .then((result) => {
+          // if deletion is successful, create a new archive
+          EventArchive.create({
+            id: eventId,
+            event_name: eventData.event_name,
+            event_description: eventData.event_description,
+            start_date: eventData.start_date,
+            end_date: eventData.end_date,
+            max_attendees: eventData.max_attendees,
+            ticket_price_regular: eventData.ticket_price_regular,
+            ticket_price_vip: eventData.ticket_price_vip,
+            created_by: eventData.created_by,
+            deleted_by: req.id,
+          })
+            .then((response) => {
+              // return response after successful archiving and deletion
+              res.status(200).json({
+                status: "success",
+                message: "Event deleted successfully",
+                data: {
+                  deletedItems: result,
+                },
+              });
+            })
+            .catch((error) => {
+              if (!error.statusCode) {
+                error.statusCode = 500;
+              }
+              error.message = "Something went wrong";
+              next(error);
+            });
+        })
+        .catch((error) => {
+          if (!error.statusCode) {
+            error.statusCode = 404;
+          }
+          error.message = "Can't find requested event";
+          next(error);
+        });
     })
     .catch((error) => {
       if (!error.statusCode) {
-        error.statusCode = 404;
+        error.statusCode = 500;
       }
-      error.message = "Can't find requested event";
+      error.message = "Oops, something went wrong";
       next(error);
     });
 };

@@ -1,7 +1,7 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Event extends Model {
+  class EventArchive extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -9,19 +9,13 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.Ticket, { foreignKey: "event_id" });
-      // Define many-to-many association with User
-      this.belongsToMany(models.User, {
-        through: "EventAttendees", // Name of the junction table
-        foreignKey: "event_id", // Foreign key in EventAttendees referencing Event
-      });
     }
   }
-  Event.init(
+  EventArchive.init(
     {
       id: {
         allowNull: false,
-        autoIncrement: true,
+        autoIncrement: false,
         primaryKey: true,
         type: DataTypes.INTEGER,
       },
@@ -34,14 +28,18 @@ module.exports = (sequelize, DataTypes) => {
       ticket_price_regular: DataTypes.FLOAT,
       created_by: DataTypes.INTEGER,
       deleted_by: DataTypes.INTEGER,
+      deleted_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW,
+      },
     },
     {
       sequelize,
-      modelName: "Event",
+      modelName: "EventArchive",
       underscored: true,
       // explictly declare the table name
-      tableName: "Events",
+      tableName: "EventArchives",
     }
   );
-  return Event;
+  return EventArchive;
 };
