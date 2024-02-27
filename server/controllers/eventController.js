@@ -128,10 +128,27 @@ const updateEvent = (req, res, next) => {
 };
 
 const deleteEvent = (req, res, next) => {
-  res.status(200).json({
-    status: "success",
-    message: "Event deleted successfully",
-  });
+  Event.destroy({
+    where: {
+      id: req.params.eventId,
+    },
+  })
+    .then((result) => {
+      res.status(200).json({
+        status: "success",
+        message: "Event deleted successfully",
+        data: {
+          deletedItems: result,
+        },
+      });
+    })
+    .catch((error) => {
+      if (!error.statusCode) {
+        error.statusCode = 404;
+      }
+      error.message = "Can't find requested event";
+      next(error);
+    });
 };
 
 module.exports = {
