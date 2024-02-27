@@ -1,4 +1,3 @@
-const { response } = require("express");
 const { Event } = require("../db/models");
 const { validationResult } = require("express-validator");
 
