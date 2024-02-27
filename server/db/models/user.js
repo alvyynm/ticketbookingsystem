@@ -10,11 +10,15 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.hasMany(models.Ticket, { foreignKey: "user_id" });
+      this.hasMany(models.Ticket, {
+        foreignKey: "user_id",
+        allowNull: false,
+        onDelete: "SET NULL",
+      });
       // Define many-to-many association with Event
       this.belongsToMany(models.Event, {
-        through: "EventAttendees", // Name of the junction table
-        foreignKey: "user_id", // Foreign key in EventAttendees referencing User
+        through: "UserEvents", // Name of the junction table
+        foreignKey: "user_id", // Foreign key in UserEvents referencing User
       });
     }
   }

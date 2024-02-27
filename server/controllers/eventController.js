@@ -68,6 +68,14 @@ const createEvent = (req, res, next) => {
 const getEventById = (req, res, next) => {
   Event.findByPk(req.params.eventId)
     .then((result) => {
+      if (!result) {
+        res.status(404).json({
+          status: "success",
+          message: "No event found",
+          data: {},
+        });
+      }
+      // if event exists, return success
       res.status(200).json({
         status: "success",
         message: "Event data fetched successfully",
@@ -133,6 +141,15 @@ const deleteEvent = (req, res, next) => {
   // first, retrieve the event's data from db
   Event.findByPk(eventId)
     .then((eventData) => {
+      // check if event with id doesn't exist and throw an error
+      if (!eventData) {
+        res.status(404).json({
+          status: "success",
+          message: "No event found",
+          data: {},
+        });
+      }
+      // if event exists, then delete it
       Event.destroy({
         where: {
           id: eventId,

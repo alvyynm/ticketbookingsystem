@@ -9,7 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.User, { foreignKey: "user_id" });
+      this.belongsTo(models.User, {
+        foreignKey: "user_id",
+      });
+      this.belongsTo(models.Event, {
+        foreignKey: "event_id",
+      });
     }
   }
   Ticket.init(
@@ -22,6 +27,13 @@ module.exports = (sequelize, DataTypes) => {
       },
       user_id: DataTypes.INTEGER,
       event_id: DataTypes.INTEGER,
+      seats_reserved: {
+        type: DataTypes.INTEGER,
+        validate: {
+          min: 1,
+          max: 5,
+        },
+      },
       ticket_type: {
         type: DataTypes.ENUM,
         values: ["vip", "regular"],
