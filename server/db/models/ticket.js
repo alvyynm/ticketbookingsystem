@@ -30,6 +30,13 @@ module.exports = (sequelize, DataTypes) => {
       user_name: DataTypes.STRING,
       event_name: DataTypes.STRING,
       event_date: DataTypes.DATE,
+      seats_reserved: {
+        type: DataTypes.INTEGER,
+        validate: {
+          min: 1,
+          max: 5,
+        },
+      },
       ticket_type: {
         type: DataTypes.ENUM,
         values: ["vip", "regular"],
