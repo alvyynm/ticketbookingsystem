@@ -3,11 +3,25 @@ const crypto = require("crypto");
 const { Ticket } = require("../db/models");
 
 const getTickets = (req, res, next) => {
-  res.status(200).json({
-    status: "success",
-    data: "tickets data",
-    message: "Tickets data fetched successfully",
-  });
+  Ticket.findAll({
+    where: {
+      user_id: req.id,
+    },
+  })
+    .then((tickets) => {
+      res.status(200).json({
+        status: "success",
+        message: "Tickets data fetched successfully",
+        data: tickets,
+      });
+    })
+    .catch((error) => {
+      if (!error.statusCode) {
+        error.statusCode = 404;
+      }
+      error.message = "Failed to fetch tickets data";
+      next();
+    });
 };
 
 const createTicket = (req, res, next) => {
