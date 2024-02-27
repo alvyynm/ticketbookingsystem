@@ -1,6 +1,7 @@
 const express = require("express");
 const { body } = require("express-validator");
 const eventController = require("../controllers/eventController");
+const isAuthenticated = require("../middleware/is-auth");
 const router = express.Router();
 
 // GET v1/events/:eventId/attendees
@@ -15,6 +16,7 @@ router.get("/events", eventController.getEvents);
 // POST v1/events
 router.post(
   "/events",
+  isAuthenticated,
   [
     body("event_name")
       .trim()
