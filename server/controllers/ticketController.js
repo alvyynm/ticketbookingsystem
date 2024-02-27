@@ -1,6 +1,6 @@
 const { validationResult } = require("express-validator");
 const crypto = require("crypto");
-const { Ticket } = require("../db/models");
+const { Ticket, UserEvent } = require("../db/models");
 
 const getTickets = (req, res, next) => {
   Ticket.findAll({
@@ -51,10 +51,16 @@ const createTicket = (req, res, next) => {
     ticket_serial: ticket_serial,
   })
     .then((result) => {
-      res.status(200).json({
-        status: "success",
-        message: "Ticket created successfully",
-        data: result,
+      // upon successful ticket reservation, update joint table
+      UserEvent.create({
+        user_id: user_id,
+        event_id: event_id,
+      }).then((userEvent) => {
+        res.status(200).json({
+          status: "success",
+          message: "Ticket created successfully",
+          data: result,
+        });
       });
     })
     .catch((error) => {
