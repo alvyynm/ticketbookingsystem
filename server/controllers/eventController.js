@@ -1,3 +1,4 @@
+const { response } = require("express");
 const { Event } = require("../db/models");
 const { validationResult } = require("express-validator");
 
@@ -91,11 +92,39 @@ const getEventAttendees = (req, res, next) => {
 };
 
 const updateEvent = (req, res, next) => {
-  res.status(200).json({
-    status: "success",
-    message: "Event updated successfully",
-    data: "event data",
-  });
+  // read payload data from request body
+  const event_name = req.body.event_name;
+  const event_description = req.body.event_description;
+  const start_date = req.body.start_date;
+  const end_date = req.body.end_date;
+  const max_attendees = req.body.max_attendees;
+  const ticket_price_vip = req.body.ticket_price_vip;
+  const ticket_price_regular = req.body.ticket_price_regular;
+
+  Event.upsert({
+    id: req.params.eventId,
+    event_name: event_name,
+    event_description: event_description,
+    start_date: start_date,
+    end_date: end_date || null,
+    max_attendees: max_attendees,
+    ticket_price_vip: ticket_price_vip,
+    ticket_price_regular: ticket_price_regular,
+  })
+    .then((response) => {
+      res.status(200).json({
+        status: "success",
+        message: "Event updated successfully",
+        data: response,
+      });
+    })
+    .catch((error) => {
+      if (!error.statusCode) {
+        error.statusCode = 404;
+      }
+      error.message = "Can't find requested event";
+      next(error);
+    });
 };
 
 const deleteEvent = (req, res, next) => {
