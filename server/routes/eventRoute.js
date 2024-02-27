@@ -143,7 +143,7 @@ router.put(
   eventController.updateEvent
 );
 
-// DELETE v1/events
-router.delete("/events", isAuthenticated, eventController.deleteEvent);
+// DELETE v1/events/eventId
+router.delete("/events/:eventId", isAuthenticated, eventController.deleteEvent);
 
 module.exports = router;
