@@ -1,15 +1,16 @@
 const express = require("express");
 const ticketController = require("../controllers/ticketController");
+const isAuth = require("../middleware/is-auth");
 
 const router = express.Router();
 
 // GET v1/tickets/ticketId
-router.get("/tickets/:ticketId", ticketController.getTicketById);
+router.get("/tickets/:ticketId", isAuth, ticketController.getTicketById);
 
 // GET v1/tickets
-router.get("/tickets", ticketController.getTickets);
+router.get("/tickets", isAuth, ticketController.getTickets);
 
 // POST v1/tickets
-router.post("/tickets", ticketController.createTicket);
+router.post("/tickets", isAuth, ticketController.createTicket);
 
 module.exports = router;
