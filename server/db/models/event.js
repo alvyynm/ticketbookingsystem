@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(models.Ticket, {
         foreignKey: "event_id",
         allowNull: false,
-        onDelete: CASCADE,
+        onDelete: "CASCADE",
       });
       // Define many-to-many association with User
       this.belongsToMany(models.User, {
