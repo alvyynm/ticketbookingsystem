@@ -2,6 +2,7 @@ const express = require("express");
 const { body } = require("express-validator");
 const eventController = require("../controllers/eventController");
 const isAuthenticated = require("../middleware/is-auth");
+const isAdmin = require("../middleware/is-admin");
 const router = express.Router();
 
 // GET v1/events/:eventId/attendees
@@ -17,6 +18,7 @@ router.get("/events", eventController.getEvents);
 router.post(
   "/events",
   isAuthenticated,
+  isAdmin,
   [
     body("event_name")
       .trim()
@@ -82,6 +84,7 @@ router.post(
 router.put(
   "/events/:eventId",
   isAuthenticated,
+  isAdmin,
   [
     body("event_name")
       .trim()
@@ -144,6 +147,11 @@ router.put(
 );
 
 // DELETE v1/events/eventId
-router.delete("/events/:eventId", isAuthenticated, eventController.deleteEvent);
+router.delete(
+  "/events/:eventId",
+  isAuthenticated,
+  isAdmin,
+  eventController.deleteEvent
+);
 
 module.exports = router;
