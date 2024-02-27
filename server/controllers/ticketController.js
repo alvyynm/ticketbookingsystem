@@ -1,3 +1,4 @@
+const { validationResult } = require("express-validator");
 const crypto = require("crypto");
 const { Ticket } = require("../db/models");
 
@@ -10,6 +11,15 @@ const getTickets = (req, res, next) => {
 };
 
 const createTicket = (req, res, next) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    const error = new Error("Invalid data received");
+    error.statusCode = 422;
+    error.data = errors.array();
+    throw error;
+  }
+
   const user_id = req.id;
   const event_id = req.body.event_id;
   const seats_reserved = req.body.seats_reserved;
