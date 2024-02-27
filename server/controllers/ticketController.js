@@ -64,12 +64,6 @@ const createTicket = (req, res, next) => {
       error.message = "Ticket reservation failed";
       next(error);
     });
-
-  // res.status(200).json({
-  //   status: "success",
-  //   data: "ticket data",
-  //   message: "Ticket created successfully",
-  // });
 };
 
 const getTicketById = (req, res, next) => {
