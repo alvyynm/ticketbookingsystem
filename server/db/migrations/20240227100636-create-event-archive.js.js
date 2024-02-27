@@ -52,6 +52,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Events");
+    await queryInterface.dropTable("EventArchives");
   },
 };
