@@ -82,6 +82,6 @@ router.post(
 router.put("/events", isAuthenticated, eventController.updateEvent);
 
 // DELETE v1/events
-router.delete("/events", eventController.deleteEvent);
+router.delete("/events", isAuthenticated, eventController.deleteEvent);
 
 module.exports = router;
