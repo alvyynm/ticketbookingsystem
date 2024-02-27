@@ -6,8 +6,8 @@ const getEvents = (req, res, next) => {
     .then((events) => {
       res.status(200).json({
         status: "success",
-        data: events,
         message: "Events data fetched successfully",
+        data: events,
       });
     })
     .catch((error) => {
@@ -51,8 +51,8 @@ const createEvent = (req, res, next) => {
     .then((result) => {
       res.status(201).json({
         status: "success",
-        data: result,
         message: "Event created successfully",
+        data: result,
       });
     })
     .catch((error) => {
@@ -69,8 +69,8 @@ const getEventById = (req, res, next) => {
     .then((result) => {
       res.status(200).json({
         status: "success",
-        data: result,
         message: "Event data fetched successfully",
+        data: result,
       });
     })
     .catch((error) => {
@@ -85,16 +85,16 @@ const getEventById = (req, res, next) => {
 const getEventAttendees = (req, res, next) => {
   res.status(200).json({
     status: "success",
-    data: "event attendees data",
     message: "Event attendees fetched successfully",
+    data: "event attendees data",
   });
 };
 
 const updateEvent = (req, res, next) => {
   res.status(200).json({
     status: "success",
-    data: "event data",
     message: "Event updated successfully",
+    data: "event data",
   });
 };
 
