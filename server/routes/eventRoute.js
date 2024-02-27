@@ -79,7 +79,7 @@ router.post(
 );
 
 // PUT v1/events
-router.put("/events", eventController.updateEvent);
+router.put("/events", isAuthenticated, eventController.updateEvent);
 
 // DELETE v1/events
 router.delete("/events", eventController.deleteEvent);
