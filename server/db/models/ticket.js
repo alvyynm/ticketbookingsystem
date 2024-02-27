@@ -9,7 +9,12 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      this.belongsTo(models.User);
+      this.belongsTo(models.User, {
+        foreignKey: "user_id",
+      });
+      this.belongsTo(models.Event, {
+        foreignKey: "event_id",
+      });
     }
   }
   Ticket.init(
