@@ -27,9 +27,6 @@ module.exports = (sequelize, DataTypes) => {
       },
       user_id: DataTypes.INTEGER,
       event_id: DataTypes.INTEGER,
-      user_name: DataTypes.STRING,
-      event_name: DataTypes.STRING,
-      event_date: DataTypes.DATE,
       seats_reserved: {
         type: DataTypes.INTEGER,
         validate: {
