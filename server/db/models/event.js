@@ -16,8 +16,8 @@ module.exports = (sequelize, DataTypes) => {
       });
       // Define many-to-many association with User
       this.belongsToMany(models.User, {
-        through: "EventAttendees", // Name of the junction table
-        foreignKey: "event_id", // Foreign key in EventAttendees referencing Event
+        through: "UserEvents", // Name of the junction table
+        foreignKey: "event_id", // Foreign key in UserEvents referencing Event
       });
     }
   }
