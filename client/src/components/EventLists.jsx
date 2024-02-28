@@ -2,9 +2,15 @@ import eventsData from "../data/event.js";
 import Moment from "moment";
 import { Link } from "react-router-dom";
 const events = eventsData;
+import partyImg1 from "../assets/party.jpg";
+import partyImg2 from "../assets/party1.jpg";
+import partyImg3 from "../assets/party2.jpg";
+import partyImg4 from "../assets/party3.jpg";
 
 function EventLists() {
   //   console.log(events.map((event) => event.event_name));
+  const images = [partyImg1, partyImg2, partyImg3, partyImg4];
+
   return (
     <>
       <h2>All Upcoming Events</h2>
@@ -14,10 +20,7 @@ function EventLists() {
             <div className="card w-78 bg-base-100 shadow-xl">
               <figure className="px-5 pt-5">
                 <img
-                  src={
-                    "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg"
-                  }
-                  alt="Shoes"
+                  src={images[Math.floor(Math.random() * images.length)]}
                   className="rounded-xl"
                 />
               </figure>
