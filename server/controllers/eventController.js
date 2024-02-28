@@ -46,6 +46,7 @@ const createEvent = (req, res, next) => {
     start_date: start_date,
     end_date: end_date,
     max_attendees: max_attendees,
+    available_seats: available_seats,
     ticket_price_regular: ticket_price_regular,
     ticket_price_vip: ticket_price_vip,
     created_by: req.id,
