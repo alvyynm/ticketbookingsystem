@@ -11,7 +11,7 @@ function Event() {
   const event = events.find((event) => event.id === +eventId);
   //   console.log(event);
   if (!event) {
-    return <span>The event you've requested doesn't exist.</span>;
+    return <span>The event you&apos;ve requested doesn&apos;t exist.</span>;
   }
   const { event_name, event_description, start_date } = event;
   return (
