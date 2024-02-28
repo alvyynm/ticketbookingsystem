@@ -21,6 +21,8 @@ function Login() {
                     <span className="label-text">Email</span>
                   </label>
                   <input
+                    id="email"
+                    name="email"
                     type="email"
                     placeholder="email"
                     className="input input-bordered"
@@ -32,6 +34,8 @@ function Login() {
                     <span className="label-text">Password</span>
                   </label>
                   <input
+                    id="password"
+                    name="password"
                     type="password"
                     placeholder="password"
                     className="input input-bordered"
