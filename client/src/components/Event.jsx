@@ -13,7 +13,7 @@ function Event() {
   }
   const { event_name, event_description } = event;
   return (
-    <div style={{ padding: 20 }}>
+    <div>
       <h3>{event_name}</h3>
       <p>{event_description}</p>
     </div>
