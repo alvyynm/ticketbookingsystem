@@ -36,6 +36,7 @@ module.exports = (sequelize, DataTypes) => {
       max_attendees: DataTypes.INTEGER,
       ticket_price_vip: DataTypes.FLOAT,
       ticket_price_regular: DataTypes.FLOAT,
+      available_seats: DataTypes.INTEGER,
       created_by: DataTypes.INTEGER,
       deleted_by: DataTypes.INTEGER,
     },
