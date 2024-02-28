@@ -37,6 +37,7 @@ const createEvent = (req, res, next) => {
   const max_attendees = req.body.max_attendees;
   const ticket_price_vip = req.body.ticket_price_vip;
   const ticket_price_regular = req.body.ticket_price_regular;
+  const available_seats = req.body.max_attendees;
 
   // create a new event
   Event.create({
