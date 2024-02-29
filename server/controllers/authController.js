@@ -131,7 +131,7 @@ const login = (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
-  res.cookie("token", "", {
+  res.cookie("jwt", "", {
     httpOnly: true,
     expires: new Date(Date.now() + 1000),
   });
