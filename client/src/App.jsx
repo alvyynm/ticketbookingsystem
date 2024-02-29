@@ -1,5 +1,7 @@
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store.js";
 import Home from "./pages/Home";
 import Events from "./pages/Events";
 import NotFound from "./pages/NotFound";
@@ -12,20 +14,22 @@ import Signup from "./pages/Signup.jsx";
 
 function App() {
   return (
-    <Router>
-      <>{<Navbar />}</>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/events" element={<Events />}>
-          <Route index element={<EventLists />} />
-          <Route path=":eventId" element={<Event />} />
-        </Route>
-        <Route path="/admin" element={<Admin />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <>{<Navbar />}</>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/events" element={<Events />}>
+            <Route index element={<EventLists />} />
+            <Route path=":eventId" element={<Event />} />
+          </Route>
+          <Route path="/admin" element={<Admin />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </Provider>
   );
 }
 
