@@ -26,6 +26,12 @@ function Event() {
   const event = events.find((event) => event.id === +eventId);
   //   console.log(event);
 
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent page refresh
+
+    // Your form submission logic here
+  };
+
   if (!event) {
     return <span>The event you&apos;ve requested doesn&apos;t exist.</span>;
   }
@@ -59,7 +65,10 @@ function Event() {
       </div>
       <h2 className="text-3xl font-semibold py-6">Tickets</h2>
       {/* Take two */}
-      <form className="max-w-3xl p-6 bg-white rounded-lg shadow-md">
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-3xl p-6 bg-white rounded-lg shadow-md"
+      >
         <h2 className="text-xl font-semibold mb-4 text-black">
           Ticket Booking
         </h2>
