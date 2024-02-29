@@ -18,6 +18,9 @@ app.disable("x-powered-by");
 // Parse incoming request bodies in a middleware before handlers
 app.use(bodyParser.json());
 
+// Prevent cors errors
+app.use(cors());
+
 app.get("/", (req, res) => {
   res.status(200).json({
     status: "success",
