@@ -12,15 +12,14 @@ const ticketRoutes = require("./routes/ticketRoute");
 const { sequelize } = require("./db/models");
 
 const app = express();
+// use cookieParser to parse jwt stored in cookies
+app.use(cookieParser());
 
 // Disable the "X-Powered-By" header
 app.disable("x-powered-by");
 
 // Parse incoming request bodies in a middleware before handlers
 app.use(bodyParser.json());
-
-// use cookieParser to parse jwt stored in cookies
-app.use(cookieParser());
 
 // Prevent cors errors
 app.use(cors());
