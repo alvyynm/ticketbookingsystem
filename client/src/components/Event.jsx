@@ -30,6 +30,15 @@ function Event() {
     e.preventDefault(); // Prevent page refresh
 
     // Your form submission logic here
+    const ticketData = {
+      user_id: 6,
+      event_id: eventId,
+      seats_reserved: seatsReserved,
+      ticket_type: ticketType,
+      ticket_price: ticketPrice,
+    };
+    console.log(ticketData);
+    // TODO: Send data to API server
   };
 
   if (!event) {
