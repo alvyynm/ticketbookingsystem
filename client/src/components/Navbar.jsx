@@ -1,9 +1,27 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { useLogoutMutation } from "../slices/userApiSlice";
+import { removeCredentials } from "../slices/authSlice";
 
 function Navbar() {
   const { userInfo } = useSelector((state) => state.auth);
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [logout, { isLoading, error }] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    // logout handler
+
+    try {
+      await logout().unwrap();
+      dispatch(removeCredentials);
+      navigate("/");
+    } catch (error) {
+      console.log(error?.data?.message);
+    }
+  };
   return (
     <nav>
       <div className="navbar bg-base-100">
@@ -27,7 +45,7 @@ function Navbar() {
                         <Link to="/profile">Profile</Link>
                       </li>
                       <li>
-                        <button>Logout</button>
+                        <button onClick={handleLogout}>Logout</button>
                       </li>
                     </>
                   ) : (
