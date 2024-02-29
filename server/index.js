@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 const cors = require("cors");
 require("dotenv").config({ path: `${process.cwd()}/.env` });
 const port = process.env.PORT || 4000;
@@ -17,6 +18,12 @@ app.disable("x-powered-by");
 
 // Parse incoming request bodies in a middleware before handlers
 app.use(bodyParser.json());
+
+// use cookieParser to parse jwt stored in cookies
+app.use(cookieParser());
+
+// Prevent cors errors
+app.use(cors());
 
 app.get("/", (req, res) => {
   res.status(200).json({
