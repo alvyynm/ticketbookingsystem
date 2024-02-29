@@ -102,6 +102,14 @@ const login = (req, res, next) => {
           expiresIn: "4h",
         }
       );
+      // set cookie
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        sameSite: "strict",
+        maxAge: 4 * 60 * 60 * 1000, // 4 hours
+      });
+
       res.status(200).json({
         status: "success",
         message: "Login successful!",
