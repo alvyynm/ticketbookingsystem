@@ -10,12 +10,34 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading, error }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/");
+    }
+  }, [navigate, userInfo]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log({
       email,
       password,
     });
+
+    try {
+      const res = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...res }));
+      navigate("/");
+    } catch (err) {
+      // TODO: display error message using react-toastify
+      console.log(err?.data?.message);
+    }
   };
 
   return (
@@ -68,8 +90,12 @@ function Login() {
                   </label>
                 </div>
                 <div className="form-control mt-6">
-                  <button type="submit" className="btn btn-primary">
-                    Login
+                  <button
+                    type="submit"
+                    disabled={isLoading}
+                    className="btn btn-primary"
+                  >
+                    {isLoading ? "Loading..." : "Login"}
                   </button>
                 </div>
               </form>
