@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setEvents } from "../slices/eventsSlice";
 import { useEffect, useState } from "react";
 import Moment from "moment";
-import EditEventModal from "../components/EditEventModal";
 function Admin() {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -228,9 +227,6 @@ function Admin() {
                 </>
               );
             })}
-            {isModalOpen && (
-              <EditEventModal onClose={() => setIsModalOpen(false)} />
-            )}
           </tbody>
         </table>
       </div>
