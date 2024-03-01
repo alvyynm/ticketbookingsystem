@@ -95,6 +95,7 @@ const login = (req, res, next) => {
       const token = jwt.sign(
         {
           email: loggedInUser.user_email,
+          name: loggedInUser.user_name,
           userId: loggedInUser.id,
           userRole: loggedInUser.user_role,
         },
