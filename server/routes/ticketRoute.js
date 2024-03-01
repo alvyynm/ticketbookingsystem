@@ -16,7 +16,6 @@ router.post(
   "/tickets",
   isAuth,
   [
-    body("user_id").trim().not().isEmpty().withMessage("User id is required"),
     body("event_id").trim().not().isEmpty().withMessage("Event id is required"),
     body("seats_reserved")
       .trim()
