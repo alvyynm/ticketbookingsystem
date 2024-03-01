@@ -1,5 +1,6 @@
 const { Event, EventArchive } = require("../db/models");
 const { validationResult } = require("express-validator");
+const sequelize = require("../config/database");
 
 const getEvents = (req, res, next) => {
   Event.findAll()
@@ -142,7 +143,7 @@ const deleteEvent = (req, res, next) => {
 
   // first, retrieve the event's data from db
   Event.findByPk(eventId)
-    .then((eventData) => {
+    .then(async (eventData) => {
       // check if event with id doesn't exist and throw an error
       if (!eventData) {
         res.status(404).json({
@@ -151,51 +152,53 @@ const deleteEvent = (req, res, next) => {
           data: {},
         });
       }
-      // if event exists, then delete it
-      Event.destroy({
-        where: {
-          id: eventId,
-        },
-      })
-        .then((result) => {
+
+      try {
+        const result = await sequelize.transaction(async (t) => {
+          // if event exists, then delete it
+
+          const deleteEventResult = await Event.destroy(
+            {
+              where: {
+                id: eventId,
+              },
+            },
+            { transaction: t }
+          );
+
           // if deletion is successful, create a new archive
-          EventArchive.create({
-            id: eventId,
-            event_name: eventData.event_name,
-            event_description: eventData.event_description,
-            start_date: eventData.start_date,
-            end_date: eventData.end_date,
-            max_attendees: eventData.max_attendees,
-            ticket_price_regular: eventData.ticket_price_regular,
-            ticket_price_vip: eventData.ticket_price_vip,
-            created_by: eventData.created_by,
-            deleted_by: req.id,
-          })
-            .then((response) => {
-              // return response after successful archiving and deletion
-              res.status(200).json({
-                status: "success",
-                message: "Event deleted successfully",
-                data: {
-                  deletedItems: result,
-                },
-              });
-            })
-            .catch((error) => {
-              if (!error.statusCode) {
-                error.statusCode = 500;
-              }
-              error.message = "Something went wrong";
-              next(error);
-            });
-        })
-        .catch((error) => {
-          if (!error.statusCode) {
-            error.statusCode = 404;
-          }
-          error.message = "Can't find requested event";
-          next(error);
+          await EventArchive.create(
+            {
+              id: eventId,
+              event_name: eventData.event_name,
+              event_description: eventData.event_description,
+              start_date: eventData.start_date,
+              end_date: eventData.end_date,
+              max_attendees: eventData.max_attendees,
+              ticket_price_regular: eventData.ticket_price_regular,
+              ticket_price_vip: eventData.ticket_price_vip,
+              created_by: eventData.created_by,
+              deleted_by: req.id,
+            },
+            { transaction: t }
+          );
+
+          // return response after successful archiving and deletion
+          res.status(200).json({
+            status: "success",
+            message: "Event deleted successfully",
+            data: {
+              deletedItems: deleteEventResult,
+            },
+          });
         });
+      } catch (error) {
+        if (!error.statusCode) {
+          error.statusCode = 500;
+        }
+        error.message = "Something went wrong";
+        next(error);
+      }
     })
     .catch((error) => {
       if (!error.statusCode) {
