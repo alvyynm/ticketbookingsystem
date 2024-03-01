@@ -3,16 +3,18 @@ const jwt = require("jsonwebtoken");
 const secret = process.env.MY_SECRET_KEY;
 
 module.exports = (req, res, next) => {
-  const token = req.cookies.jwt;
+  const authHeader = req.get("Authorization");
+  console.log("Cookie is ===>", authHeader);
 
   // check if jwt token is included in request top determine is user is authenticated
-  if (!token) {
+  if (!authHeader) {
     const error = new Error("Not auntheticated");
     error.statusCode = 401;
     throw error;
   }
 
-  // const token = authHeader.split(" ")[1];
+  const token = authHeader.split(" ")[1];
+
   let decodedToken;
   try {
     decodedToken = jwt.verify(token, secret);

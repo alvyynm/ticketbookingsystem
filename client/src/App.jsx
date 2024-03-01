@@ -11,6 +11,7 @@ import Event from "./components/Event.jsx";
 import Navbar from "./components/Navbar.jsx";
 import Login from "./pages/Login.jsx";
 import Signup from "./pages/Signup.jsx";
+import Tickets from "./pages/Tickets.jsx";
 
 function App() {
   return (
@@ -19,8 +20,10 @@ function App() {
         <>{<Navbar />}</>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/admin" element={<Admin />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/tickets" element={<Tickets />} />
           <Route path="/events" element={<Events />}>
             <Route index element={<EventLists />} />
             <Route path=":eventId" element={<Event />} />

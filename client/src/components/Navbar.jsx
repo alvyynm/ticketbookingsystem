@@ -16,7 +16,7 @@ function Navbar() {
 
     try {
       await logout().unwrap();
-      dispatch(removeCredentials);
+      dispatch(removeCredentials());
       navigate("/");
     } catch (error) {
       console.log(error?.data?.message);
@@ -24,7 +24,7 @@ function Navbar() {
   };
   return (
     <nav>
-      <div className="navbar bg-base-100">
+      <div className="navbar bg-base-100 pb-12">
         <div className="flex-1">
           <Link to="/" className="btn btn-ghost text-xl">
             EventMania
