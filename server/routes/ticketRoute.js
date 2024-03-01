@@ -2,11 +2,17 @@ const express = require("express");
 const { body } = require("express-validator");
 const ticketController = require("../controllers/ticketController");
 const isAuth = require("../middleware/is-auth");
+const isAdmin = require("../middleware/is-admin");
 
 const router = express.Router();
 
 // GET v1/tickets/ticketId
-router.get("/tickets/:ticketId", isAuth, ticketController.getTicketById);
+router.get(
+  "/tickets/:ticketId",
+  isAuth,
+  isAdmin,
+  ticketController.getTicketById
+);
 
 // GET v1/tickets
 router.get("/tickets", isAuth, ticketController.getTickets);
