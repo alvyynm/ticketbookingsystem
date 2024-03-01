@@ -103,12 +103,11 @@ const login = (req, res, next) => {
         }
       );
       // set cookie
-      res.cookie("jwt", token, {
+      res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        sameSite: "strict",
-        maxAge: 4 * 60 * 60 * 1000, // 4 hours
+        expires: new Date(Date.now() + 1000),
       });
+      // res.setHeader("Set-Cookie", "isLoggedin=true");
 
       res.status(200).json({
         status: "success",
@@ -131,7 +130,7 @@ const login = (req, res, next) => {
 };
 
 const logout = async (req, res, next) => {
-  res.cookie("jwt", "", {
+  res.cookie("token", "", {
     httpOnly: true,
     expires: new Date(Date.now() + 1000),
   });
