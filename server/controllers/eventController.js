@@ -109,6 +109,7 @@ const updateEvent = (req, res, next) => {
   const start_date = req.body.start_date;
   const end_date = req.body.end_date;
   const max_attendees = req.body.max_attendees;
+  const available_seats = req.body.available_seats;
   const ticket_price_vip = req.body.ticket_price_vip;
   const ticket_price_regular = req.body.ticket_price_regular;
 
@@ -119,6 +120,7 @@ const updateEvent = (req, res, next) => {
     start_date: start_date,
     end_date: end_date || null,
     max_attendees: max_attendees,
+    available_seats: available_seats,
     ticket_price_vip: ticket_price_vip,
     ticket_price_regular: ticket_price_regular,
   })
