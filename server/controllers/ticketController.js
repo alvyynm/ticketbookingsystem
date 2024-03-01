@@ -1,6 +1,10 @@
 const { validationResult } = require("express-validator");
 const crypto = require("crypto");
+const { Resend } = require("resend");
 const { Ticket, UserEvent, Event } = require("../db/models");
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+const resendEmail = process.env.RESEND_EMAIL;
 
 const getTickets = (req, res, next) => {
   Ticket.findAll({
@@ -34,6 +38,8 @@ const createTicket = (req, res, next) => {
     throw error;
   }
 
+  const userEmail = resendEmail || req.email;
+  const userName = req.name;
   const user_id = req.id;
   const event_id = req.body.event_id;
   const seats_reserved = req.body.seats_reserved;
@@ -138,6 +144,13 @@ const createTicket = (req, res, next) => {
                           user_id: user_id,
                           event_id: event_id,
                         }).then((userEvent) => {
+                          resend.emails.send({
+                            from: "onboarding@resend.dev",
+                            to: userEmail,
+                            subject: "Ticket Reserved",
+                            html: `<p>Congrats, ${userName}, you've reserved a ticket</strong>!</p>`,
+                          });
+
                           res.status(200).json({
                             status: "success",
                             message: "Ticket created successfully",

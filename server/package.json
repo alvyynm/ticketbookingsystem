@@ -34,6 +34,7 @@
     "nodemailer": "^6.9.10",
     "pg": "^8.11.3",
     "pg-hstore": "^2.3.4",
+    "resend": "^3.2.0",
     "sequelize": "^6.37.1"
   },
   "devDependencies": {
