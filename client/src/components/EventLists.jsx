@@ -1,6 +1,8 @@
 import Moment from "moment";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useGetEventsQuery } from "../slices/eventApiSlice";
+import { setEvents } from "../slices/eventsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import partyImg1 from "../assets/party.jpg";
 import partyImg2 from "../assets/party1.jpg";
@@ -11,6 +13,21 @@ function EventLists() {
   const { data, isLoading } = useGetEventsQuery();
   const images = [partyImg1, partyImg2, partyImg3, partyImg4];
   const { events } = useSelector((state) => state.events);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(setEvents(data));
+  }, [data]);
+
+  if (isLoading) {
+    return (
+      <>
+        <p>Loading events </p>
+      </>
+    );
+  } else if (!events) {
+    return <>No events</>;
+  }
   return (
     <>
       <h2>All Upcoming Events</h2>
