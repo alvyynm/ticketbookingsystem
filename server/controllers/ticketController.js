@@ -203,10 +203,21 @@ const createTicket = (req, res, next) => {
 };
 
 const getTicketById = (req, res, next) => {
-  res.status(200).json({
-    status: "success",
-    data: "ticket data",
-    message: "Ticket data fetched successfully",
+  const ticketId = req.params.ticketId;
+
+  Ticket.findByPk(ticketId).then((ticket) => {
+    if (!ticket) {
+      res.status(404).json({
+        status: "success",
+        message: "No tickets found",
+        data: [],
+      });
+    }
+    res.status(404).json({
+      status: "success",
+      message: "Ticket data fetched successfully",
+      data: ticket,
+    });
   });
 };
 
