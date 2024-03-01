@@ -14,6 +14,25 @@ Here are the requirements.
 
 - The user should then be able to get an email notification for the successful reservation.
 
+## Usage
+
+1. Download the code and cd into the directory:
+   ```bash
+   $ git clone git@github.com:alvyynm/ticketbookingsystem.git
+   $ cd ticketbookingsystem
+   ```
+2. Install necessary libraries and dependencies
+   ```bash
+   $ cd server && npm install
+   $ cd client && npm install
+   ```
+3. Navigate to the server directory (necessary to run both the server and the client concurrently). [Concurrently](https://github.com/open-cli-tools/concurrently) is used to enable this.
+   ```bash
+   $ cd server
+   $ npm run dev
+   ```
+   Server runs on port `4000` (by default) while the client is on port `5173`. You can
+
 ## API Reference
 
 ### Routes
