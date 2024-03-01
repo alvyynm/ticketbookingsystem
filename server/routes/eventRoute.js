@@ -30,9 +30,9 @@ router.post(
       .not()
       .isEmpty()
       .withMessage("Event description is required")
-      .matches(/^(?=.*[A-Za-z]).{150,}$/)
+      .matches(/^(?=.*[A-Za-z]).{100,300}$/)
       .withMessage(
-        "Event description must be at least 150 characters, including white spaces, letters, digits, dollar sign, euro sign, or pound sign, and at least several letters"
+        "Event description must be between 100 and 300 characters, including white spaces, letters, digits, dollar sign, euro sign, or pound sign, and at least several letters"
       ),
     body("start_date")
       .trim()
@@ -96,9 +96,9 @@ router.put(
       .not()
       .isEmpty()
       .withMessage("Event description is required")
-      .matches(/^(?=.*[A-Za-z]).{150,}$/)
+      .matches(/^(?=.*[A-Za-z]).{100,300}$/)
       .withMessage(
-        "Event description must be at least 150 characters, including white spaces, letters, digits, dollar sign, euro sign, or pound sign, and at least several letters"
+        "Event description must be between 100 and 300 characters, including white spaces, letters, digits, dollar sign, euro sign, or pound sign, and at least several letters"
       ),
     body("start_date")
       .trim()
@@ -141,6 +141,15 @@ router.put(
       .isNumeric({ min: 0 })
       .withMessage(
         "Regular ticket price must be a valid integer or float with a minimum value of 0"
+      ),
+    body("available_seats")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Available seats is required")
+      .isNumeric({ min: 0 })
+      .withMessage(
+        "Available seats must be a valid integer with a minimum value of 0"
       ),
   ],
   eventController.updateEvent
