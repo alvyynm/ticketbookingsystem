@@ -121,6 +121,7 @@ payload:
   "start_date": "2024-03-26T04:10:00.000Z",
   "end_date": "2024-03-29T04:14:00.000Z",
   "max_attendees": "3",
+  "available_seats": "1",
   "ticket_price_vip": "480",
   "ticket_price_regular": "130"
 }
@@ -145,7 +146,6 @@ POST `/v1/tickets`
 ```bash
 payload:
 {
-  "user_id": 6,
   "event_id": 9,
   "seats_reserved": {min: 1, max: 5},
   "ticket_type": "regular" || "vip",
