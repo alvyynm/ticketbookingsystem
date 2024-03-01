@@ -96,6 +96,7 @@ const login = (req, res, next) => {
         {
           email: loggedInUser.user_email,
           userId: loggedInUser.id,
+          userRole: loggedInUser.user_role,
         },
         secret,
         {
@@ -117,6 +118,7 @@ const login = (req, res, next) => {
           user_id: loggedInUser.id,
           email: loggedInUser.user_email,
           name: loggedInUser.user_name,
+          role: loggedInUser.user_role,
         },
       });
     })
