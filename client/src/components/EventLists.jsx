@@ -1,16 +1,16 @@
-import eventsData from "../data/event.js";
 import Moment from "moment";
 import { Link } from "react-router-dom";
-const events = eventsData;
+import { useGetEventsQuery } from "../slices/eventApiSlice";
+import { useSelector, useDispatch } from "react-redux";
 import partyImg1 from "../assets/party.jpg";
 import partyImg2 from "../assets/party1.jpg";
 import partyImg3 from "../assets/party2.jpg";
 import partyImg4 from "../assets/party3.jpg";
 
 function EventLists() {
-  //   console.log(events.map((event) => event.event_name));
+  const { data, isLoading } = useGetEventsQuery();
   const images = [partyImg1, partyImg2, partyImg3, partyImg4];
-
+  const { events } = useSelector((state) => state.events);
   return (
     <>
       <h2>All Upcoming Events</h2>
