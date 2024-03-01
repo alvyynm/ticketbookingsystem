@@ -162,3 +162,8 @@ GET `/v1/tickets`
 headers:
 Authorization: `Bearer ${token}`
 ```
+
+GET `/v1/tickets/:event_id`
+
+- Get details about a ticket
+- Must be `admin` user and authenticated
