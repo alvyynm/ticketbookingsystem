@@ -142,6 +142,16 @@ router.put(
       .withMessage(
         "Regular ticket price must be a valid integer or float with a minimum value of 0"
       ),
+    body("available_seats")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Available seats is required")
+      .isNumeric({ min: 0 })
+      .withMessage(
+        "Available seats must be a valid integer with a minimum value of 0"
+      ),
+    ,
   ],
   eventController.updateEvent
 );
