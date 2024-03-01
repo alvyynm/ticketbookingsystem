@@ -151,7 +151,6 @@ router.put(
       .withMessage(
         "Available seats must be a valid integer with a minimum value of 0"
       ),
-    ,
   ],
   eventController.updateEvent
 );
