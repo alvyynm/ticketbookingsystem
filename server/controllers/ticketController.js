@@ -1,6 +1,7 @@
 const { validationResult } = require("express-validator");
 const crypto = require("crypto");
 const { Resend } = require("resend");
+const sequelize = require("../config/database");
 const { Ticket, UserEvent, Event } = require("../db/models");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -94,7 +95,7 @@ const createTicket = (req, res, next) => {
               user_id: user_id,
             },
           })
-            .then((data) => {
+            .then(async (data) => {
               // 6. Calculate the total seats reserved by the user for the specified event
 
               const totalSeatsReserved = data.reduce((total, reservation) => {
@@ -115,57 +116,63 @@ const createTicket = (req, res, next) => {
                 // 7b. If user hasn't exceeded the reservation limit of 5 per event
 
                 if (remaining_reservations >= seats_reserved) {
-                  // 8 create a new ticket
-                  Ticket.create({
-                    user_id: user_id,
-                    event_id: event_id,
-                    seats_reserved: seats_reserved,
-                    ticket_type: ticket_type,
-                    ticket_price: ticket_price,
-                    ticket_serial: ticket_serial,
-                  })
-                    .then((result) => {
-                      // 8a. upon successful ticket reservation,
-                      // 8a 1. reduce the number of seats_available in the event by seats_reserved
-                      Event.upsert({
-                        id: event_id,
-                        available_seats: available_seats_after_reservation,
-                      }).then((updateEventResult) => {
-                        if (!updateEventResult) {
-                          // throw an error if event update failed
-                          res.status(403).json({
-                            status: "failed",
-                            message: "Something went wrong (event updating)",
-                            data: [],
-                          });
-                        }
-                        // 8a 2. update joint table
-                        UserEvent.create({
+                  // FIXME: sTART OF TX
+                  const result = await sequelize.transaction(async (t) => {
+                    try {
+                      // 8 create a new ticket
+                      const ticketCreationResponse = await Ticket.create(
+                        {
                           user_id: user_id,
                           event_id: event_id,
-                        }).then((userEvent) => {
-                          resend.emails.send({
-                            from: "onboarding@resend.dev",
-                            to: userEmail,
-                            subject: "Ticket Reserved",
-                            html: `<p>Congrats, ${userName}, you've reserved a ticket</strong>!</p>`,
-                          });
+                          seats_reserved: seats_reserved,
+                          ticket_type: ticket_type,
+                          ticket_price: ticket_price,
+                          ticket_serial: ticket_serial,
+                        },
+                        { transaction: t }
+                      );
+                      // 8a. upon successful ticket reservation,
+                      // 8a 1. reduce the number of seats_available in the event by seats_reserved
+                      await Event.upsert(
+                        {
+                          id: event_id,
+                          available_seats: available_seats_after_reservation,
+                        },
+                        { transaction: t }
+                      );
 
-                          res.status(200).json({
-                            status: "success",
-                            message: "Ticket created successfully",
-                            data: result,
-                          });
-                        });
+                      // 8a 2. update joint table
+                      await UserEvent.create(
+                        {
+                          user_id: user_id,
+                          event_id: event_id,
+                        },
+                        { transaction: t }
+                      );
+
+                      // 9. Send email notification
+                      await resend.emails.send({
+                        from: "onboarding@resend.dev",
+                        to: userEmail,
+                        subject: "Ticket Reserved",
+                        html: `<p>Congrats, ${userName}, you've reserved a ticket</strong>!</p>`,
                       });
-                    })
-                    .catch((error) => {
+
+                      // 10. If execution reaches this point, the txn has been completed successfully, send response
+                      res.status(200).json({
+                        status: "success",
+                        message: "Ticket created successfully",
+                        data: ticketCreationResponse,
+                      });
+                    } catch (error) {
+                      // if something goes wrong in the transaction, throw an error
                       if (!error.statusCode) {
                         error.statusCode = 422;
                       }
                       error.message = "Ticket reservation failed";
                       next(error);
-                    });
+                    }
+                  });
                 } else {
                   // if user wants to reserve more than remaining reservation
                   res.status(403).json({
@@ -180,7 +187,7 @@ const createTicket = (req, res, next) => {
               if (!error.statusCode) {
                 error.statusCode = 422;
               }
-              error.message = "Ticket reservation failed";
+              error.message = "Ticket sreservation failed";
               next(error);
             });
         }
