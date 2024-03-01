@@ -128,3 +128,6 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# avoid adding macOS DS_Store files to the repo
+.DS_Store
