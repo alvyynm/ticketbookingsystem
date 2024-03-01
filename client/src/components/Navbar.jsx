@@ -16,7 +16,7 @@ function Navbar() {
 
     try {
       await logout().unwrap();
-      dispatch(removeCredentials);
+      dispatch(removeCredentials());
       navigate("/");
     } catch (error) {
       console.log(error?.data?.message);
