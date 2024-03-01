@@ -4,6 +4,7 @@ const { Resend } = require("resend");
 const { Ticket, UserEvent, Event } = require("../db/models");
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+const resendEmail = process.env.RESEND_EMAIL;
 
 const getTickets = (req, res, next) => {
   Ticket.findAll({
@@ -37,7 +38,7 @@ const createTicket = (req, res, next) => {
     throw error;
   }
 
-  const userEmail = req.email;
+  const userEmail = resendEmail || req.email;
   const userName = req.name;
   const user_id = req.id;
   const event_id = req.body.event_id;
