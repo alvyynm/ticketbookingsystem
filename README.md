@@ -167,3 +167,14 @@ GET `/v1/tickets/:event_id`
 
 - Get details about a ticket
 - Must be `admin` user and authenticated
+
+POST `/v1/tickets/verify`
+
+- Verify a ticket's serial number
+
+```bash
+payload:
+{
+  "ticket_serial": "your ticket serial"
+}
+```
