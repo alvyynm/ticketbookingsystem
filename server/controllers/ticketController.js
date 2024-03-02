@@ -203,15 +203,49 @@ const createTicket = (req, res, next) => {
 };
 
 const getTicketById = (req, res, next) => {
-  res.status(200).json({
-    status: "success",
-    data: "ticket data",
-    message: "Ticket data fetched successfully",
+  const ticketId = req.params.ticketId;
+
+  Ticket.findByPk(ticketId).then((ticket) => {
+    if (!ticket) {
+      res.status(404).json({
+        status: "success",
+        message: "No tickets found",
+        data: [],
+      });
+    }
+    res.status(404).json({
+      status: "success",
+      message: "Ticket data fetched successfully",
+      data: ticket,
+    });
   });
+};
+
+const verifyTicket = (req, res, next) => {
+  const ticketSerial = req.body.ticket_serial;
+
+  Ticket.findAll({
+    where: { ticket_serial: ticketSerial },
+  })
+    .then((ticket) => {
+      res.status(200).json({
+        status: "success",
+        message: "Ticket is valid",
+        data: ticket,
+      });
+    })
+    .catch((error) => {
+      if (!error.statusCode) {
+        error.statusCode = 422;
+      }
+      error.message = "Ticket is invalid, cross check serial and try again.";
+      next(error);
+    });
 };
 
 module.exports = {
   createTicket,
   getTicketById,
   getTickets,
+  verifyTicket,
 };
