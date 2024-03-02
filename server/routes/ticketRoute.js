@@ -14,6 +14,19 @@ router.get(
   ticketController.getTicketById
 );
 
+// POST v1/tickets
+router.post(
+  "/tickets/verify",
+  [
+    body("ticket_serial")
+      .trim()
+      .not()
+      .isEmpty()
+      .withMessage("Event id is required"),
+  ],
+  ticketController.verifyTicket
+);
+
 // GET v1/tickets
 router.get("/tickets", isAuth, ticketController.getTickets);
 

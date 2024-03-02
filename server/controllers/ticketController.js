@@ -221,8 +221,31 @@ const getTicketById = (req, res, next) => {
   });
 };
 
+const verifyTicket = (req, res, next) => {
+  const ticketSerial = req.body.ticket_serial;
+
+  Ticket.findAll({
+    where: { ticket_serial: ticketSerial },
+  })
+    .then((ticket) => {
+      res.status(200).json({
+        status: "success",
+        message: "Ticket is valid",
+        data: ticket,
+      });
+    })
+    .catch((error) => {
+      if (!error.statusCode) {
+        error.statusCode = 422;
+      }
+      error.message = "Ticket is invalid, cross check serial and try again.";
+      next(error);
+    });
+};
+
 module.exports = {
   createTicket,
   getTicketById,
   getTickets,
+  verifyTicket,
 };
