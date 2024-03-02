@@ -3,6 +3,7 @@ const { body } = require("express-validator");
 const ticketController = require("../controllers/ticketController");
 const isAuth = require("../middleware/is-auth");
 const isAdmin = require("../middleware/is-admin");
+const createTicketValidation = require("../utils/datavalidators/createTicketValidation");
 
 const router = express.Router();
 
@@ -34,26 +35,7 @@ router.get("/tickets", isAuth, ticketController.getTickets);
 router.post(
   "/tickets",
   isAuth,
-  [
-    body("event_id").trim().not().isEmpty().withMessage("Event id is required"),
-    body("seats_reserved")
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage("Seat reserved is required")
-      .isInt({ min: 1, max: 5 })
-      .withMessage("Must reserve at least one seat and a maximum of five"),
-    body("ticket_type")
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage("Ticket type is required"),
-    body("ticket_price")
-      .trim()
-      .not()
-      .isEmpty()
-      .withMessage("Ticket price is required"),
-  ],
+  createTicketValidation,
   ticketController.createTicket
 );
 
