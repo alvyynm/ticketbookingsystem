@@ -45,7 +45,7 @@ const createTicket = (req, res, next) => {
   const event_id = req.body.event_id;
   const seats_reserved = req.body.seats_reserved;
   const ticket_type = req.body.ticket_type;
-  const ticket_price = req.body.ticket_price;
+  let ticket_price;
   const ticket_serial = crypto.randomUUID({ disableEntropyCache: true });
 
   // 1. find event and check the available_seats for the event
@@ -57,6 +57,14 @@ const createTicket = (req, res, next) => {
           message: "Event not found",
           data: [],
         });
+      }
+
+      // Don't trust the ticket price from the frontend
+      if (ticket_type === "vip") {
+        ticket_price = result.ticket_price_vip * seats_reserved;
+      } else {
+        // if ticket_type === "regular"
+        ticket_price = result.ticket_price_regular * seats_reserved;
       }
 
       const available_seats = result.available_seats;
@@ -116,7 +124,6 @@ const createTicket = (req, res, next) => {
                 // 7b. If user hasn't exceeded the reservation limit of 5 per event
 
                 if (remaining_reservations >= seats_reserved) {
-                  // FIXME: sTART OF TX
                   const result = await sequelize.transaction(async (t) => {
                     try {
                       // 8 create a new ticket
