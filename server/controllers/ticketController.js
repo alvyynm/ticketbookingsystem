@@ -116,7 +116,6 @@ const createTicket = (req, res, next) => {
                 // 7b. If user hasn't exceeded the reservation limit of 5 per event
 
                 if (remaining_reservations >= seats_reserved) {
-                  // FIXME: sTART OF TX
                   const result = await sequelize.transaction(async (t) => {
                     try {
                       // 8 create a new ticket
