@@ -1,11 +1,11 @@
 import { useParams } from "react-router-dom";
 import Moment from "moment";
-import eventsData from "../data/event.js";
-const events = eventsData;
+import { useDispatch, useSelector } from "react-redux";
 import featuredImage from "../assets/party1.jpg";
 import { useState, useEffect } from "react";
 
 function Event() {
+  const { events } = useSelector((state) => state.events);
   let { eventId } = useParams();
   //   console.log("Event id", eventId);
   const [ticketType, setTicketType] = useState("regular");
