@@ -2,6 +2,7 @@ const express = require("express");
 const eventController = require("../controllers/eventController");
 const isAuthenticated = require("../middleware/is-auth");
 const isAdmin = require("../middleware/is-admin");
+const getCacheData = require("../middleware/events-cache");
 const eventValidation = require("../utils/datavalidators/eventValidation");
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.get("/events/:eventId/attendees", eventController.getEventAttendees);
 router.get("/events/:eventId", eventController.getEventById);
 
 // GET v1/events
-router.get("/events", eventController.getEvents);
+router.get("/events", getCacheData, eventController.getEvents);
 
 // POST v1/events
 router.post(
