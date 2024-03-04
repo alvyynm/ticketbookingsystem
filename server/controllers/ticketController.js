@@ -194,7 +194,7 @@ const createTicket = (req, res, next) => {
               if (!error.statusCode) {
                 error.statusCode = 422;
               }
-              error.message = "Ticket sreservation failed";
+              error.message = "Ticket reservation failed";
               next(error);
             });
         }

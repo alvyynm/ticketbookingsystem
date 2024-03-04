@@ -40,6 +40,28 @@ const createEvent = (req, res, next) => {
   const ticket_price_regular = req.body.ticket_price_regular;
   const available_seats = req.body.max_attendees;
 
+  if (
+    ticket_price_regular > ticket_price_vip ||
+    ticket_price_regular == ticket_price_vip
+  ) {
+    res.status(422).json({
+      status: "failed",
+      message: "VIP ticket price must be greater than regular",
+      data: {},
+    });
+  }
+
+  // Ensure event start date is less than or equal to end date
+  if (end_date) {
+    if (start_date > end_date) {
+      res.status(422).json({
+        status: "failed",
+        message: "start_date must be less than or equal to end_date",
+        data: {},
+      });
+    }
+  }
+
   // create a new event
   Event.create({
     event_name: event_name,
@@ -112,6 +134,17 @@ const updateEvent = (req, res, next) => {
   const available_seats = req.body.available_seats;
   const ticket_price_vip = req.body.ticket_price_vip;
   const ticket_price_regular = req.body.ticket_price_regular;
+
+  if (
+    ticket_price_regular > ticket_price_vip ||
+    ticket_price_regular == ticket_price_vip
+  ) {
+    res.status(422).json({
+      status: "failed",
+      message: "VIP ticket price must be greater than regular",
+      data: {},
+    });
+  }
 
   Event.upsert({
     id: req.params.eventId,
