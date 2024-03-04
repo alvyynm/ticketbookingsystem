@@ -3,8 +3,18 @@ const { validationResult } = require("express-validator");
 const sequelize = require("../config/database");
 
 const getEvents = (req, res, next) => {
+  let client = req.redisClient;
   Event.findAll()
-    .then((events) => {
+    .then(async (events) => {
+      // store events in Redis cache
+
+      await client.set("events", JSON.stringify(events), {
+        EX: 2592000, // set cache expiration to 30 days
+        NX: true,
+      });
+
+      console.log("Data stored in Redis cache");
+
       res.status(200).json({
         status: "success",
         message: "Events data fetched successfully",
