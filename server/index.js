@@ -31,8 +31,15 @@ const logger = winston.createLogger({
   ),
   // Log to the console and a file
   transports: [
-    new winston.transports.File({ filename: "logs/error.log", level: "error" }),
-    new winston.transports.File({ filename: "logs/api.log" }),
+    new winston.transports.File({
+      filename: "logs/error.log",
+      level: "error",
+      options: { flags: "a" },
+    }),
+    new winston.transports.File({
+      filename: "logs/api.log",
+      options: { flags: "a" },
+    }),
   ],
 });
 
