@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
 
 function Signup() {
@@ -11,6 +12,12 @@ function Signup() {
               <p className="py-6">
                 Sign up to EventMania now and start buying your tickets to great
                 upcoming events. It&apos;s free
+              </p>
+              <p className="py-2">
+                Already have an account?{" "}
+                <Link to="/login" className="link">
+                  Login
+                </Link>
               </p>
             </div>
             <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
