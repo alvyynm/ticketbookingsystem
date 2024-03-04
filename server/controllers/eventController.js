@@ -51,6 +51,17 @@ const createEvent = (req, res, next) => {
     });
   }
 
+  // Ensure event start date is less than or equal to end date
+  if (end_date) {
+    if (start_date > end_date) {
+      res.status(422).json({
+        status: "failed",
+        message: "start_date must be less than or equal to end_date",
+        data: {},
+      });
+    }
+  }
+
   // create a new event
   Event.create({
     event_name: event_name,
