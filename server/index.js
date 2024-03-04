@@ -16,8 +16,25 @@ const app = express();
 // use cookieParser to parse jwt stored in cookies
 app.use(cookieParser());
 
+function shouldCompress(req, res) {
+  if (req.headers["x-no-compression"]) {
+    // don't compress responses with this request header
+    return false;
+  }
+
+  // fallback to standard filter function
+  return compression.filter(req, res);
+}
 // compress all responses
-app.use(compression());
+app.use(
+  compression({
+    // filter: Decide if the response should be compressed or not,
+    filter: shouldCompress,
+    // threshold: It is the byte threshold for the response
+    // body size before considering compression, the default is 1 kB
+    threshold: 0,
+  })
+);
 
 // Disable the "X-Powered-By" header
 app.disable("x-powered-by");
