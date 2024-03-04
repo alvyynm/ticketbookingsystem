@@ -2,6 +2,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const compression = require("compression");
 require("dotenv").config({ path: `${process.cwd()}/.env` });
 const port = process.env.PORT || 4000;
 
@@ -14,6 +15,9 @@ const { sequelize } = require("./db/models");
 const app = express();
 // use cookieParser to parse jwt stored in cookies
 app.use(cookieParser());
+
+// compress all responses
+app.use(compression());
 
 // Disable the "X-Powered-By" header
 app.disable("x-powered-by");
