@@ -1,6 +1,9 @@
 import { useParams } from "react-router-dom";
 import Moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { setTickets } from "../slices/ticketReducer";
+import { useCreateTicketsMutation } from "../slices/ticketApiSlice";
 import featuredImage from "../assets/party1.jpg";
 import { useState, useEffect } from "react";
 
@@ -11,6 +14,13 @@ function Event() {
   const [ticketType, setTicketType] = useState("regular");
   const [seatsReserved, setSeatsReserved] = useState(1);
   const [ticketPrice, setTicketPrice] = useState(0);
+  const dispatch = useDispatch();
+
+  const [createTickets, { isLoading, error }] = useCreateTicketsMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
 
   // Calculate ticket price whenever ticket type or seats reserved change
   useEffect(() => {
@@ -26,7 +36,7 @@ function Event() {
   const event = events.find((event) => event.id === +eventId);
   //   console.log(event);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent page refresh
 
     // Your form submission logic here
@@ -37,8 +47,21 @@ function Event() {
       ticket_type: ticketType,
       ticket_price: ticketPrice,
     };
+
+    if (!userInfo) {
+      navigate("/login");
+    }
     console.log(ticketData);
     // TODO: Send data to API server
+
+    try {
+      const res = await createTickets(ticketData).unwrap();
+      dispatch(setTickets({ ...res }));
+      navigate("/tickets");
+    } catch (error) {
+      // TODO: display error message using react-toastify
+      console.log(error?.data?.message);
+    }
   };
 
   if (!event) {
@@ -121,9 +144,10 @@ function Event() {
         </div>
         <button
           type="submit"
+          disabled={isLoading}
           className="btn btn-active font-semibold btn-accent"
         >
-          Reserve Tickets
+          {isLoading ? "Loading..." : "Reserve Tickets"}
         </button>
       </form>
       {/* Take two ends */}
