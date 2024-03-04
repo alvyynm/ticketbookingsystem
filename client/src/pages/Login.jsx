@@ -51,6 +51,12 @@ function Login() {
                 Sign up to EventMania now and start buying your tickets to great
                 upcoming events. It&apos;s free
               </p>
+              <p className="py-2">
+                Don&apos;t have an account?{" "}
+                <Link to="/signup" className="link">
+                  Register
+                </Link>
+              </p>
             </div>
             <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">
               <form onSubmit={handleSubmit} className="card-body">
