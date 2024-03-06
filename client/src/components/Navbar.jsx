@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { useLogoutMutation } from "../app/api/authApiSlice";
-import { removeCredentials } from "../slices/authSlice";
+import { removeCredentials } from "../features/auth/authSlice";
 
 function Navbar() {
   const { userInfo } = useSelector((state) => state.auth);

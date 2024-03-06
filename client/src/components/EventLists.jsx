@@ -2,7 +2,7 @@ import Moment from "moment";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useGetEventsQuery } from "../app/api/eventApiSlice";
-import { setEvents } from "../slices/eventsSlice";
+import { setEvents } from "../features/events/eventsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import partyImg1 from "../assets/party.jpg";
 import partyImg2 from "../assets/party1.jpg";
@@ -15,8 +15,10 @@ function EventLists() {
   const { events } = useSelector((state) => state.events);
   const dispatch = useDispatch();
 
+  const eventsData = data?.data;
+
   useEffect(() => {
-    dispatch(setEvents(data));
+    dispatch(setEvents({ data: eventsData }));
   }, [data]);
 
   if (isLoading) {
@@ -25,14 +27,15 @@ function EventLists() {
         <p>Loading events </p>
       </>
     );
-  } else if (!events) {
+  } else if (!data) {
     return <>No events</>;
   }
+
   return (
     <>
       <h2>All Upcoming Events</h2>
       <ul className="grid lg:grid-cols-4 md:grid-cols-2 gap-4">
-        {events.map((event) => (
+        {eventsData.map((event) => (
           <li key={event.id} className="pb-8">
             <Link to={`/events/${event.id}`}>
               <div className="card w-78 bg-base-100 shadow-xl">

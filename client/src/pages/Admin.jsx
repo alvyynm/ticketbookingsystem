@@ -1,6 +1,6 @@
 import { useGetEventsQuery } from "../app/api/eventApiSlice";
 import { useSelector, useDispatch } from "react-redux";
-import { setEvents } from "../slices/eventsSlice";
+import { setEvents } from "../features/events/eventsSlice";
 import { useEffect, useState } from "react";
 import Moment from "moment";
 function Admin() {
@@ -19,12 +19,15 @@ function Admin() {
   const dispatch = useDispatch();
   const { data, isLoading } = useGetEventsQuery();
   console.log("customers", data);
+
+  const eventsData = data?.data;
+
   useEffect(() => {
-    dispatch(setEvents(data));
+    dispatch(setEvents({ data: eventsData }));
   }, [data]);
 
   const { events } = useSelector((state) => state.events);
-  console.log("events", events);
+  console.log("events", eventsData);
 
   events?.map((event) => console.log(event));
 
@@ -54,7 +57,15 @@ function Admin() {
     setRegularPrice("");
   };
 
-  if (!events) {
+  if (isLoading) {
+    return (
+      <>
+        <p>Loading events</p>
+      </>
+    );
+  }
+
+  if (!eventsData) {
     return (
       <>
         <p>No event </p>
@@ -79,7 +90,7 @@ function Admin() {
             </tr>
           </thead>
           <tbody>
-            {events.map((event) => {
+            {eventsData.map((event) => {
               return (
                 <>
                   <tr>
