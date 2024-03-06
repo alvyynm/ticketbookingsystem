@@ -14,14 +14,15 @@ const authSlice = createSlice({
       state.auth.user = user;
       state.auth.token = accessToken;
       // FIXME: DELETE LATER
-      // localStorage.setItem("user", JSON.stringify(user));
-      // localStorage.setItem("token", JSON.stringify(accessToken));
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", JSON.stringify(accessToken));
     },
     removeCredentials: (state, action) => {
       state.auth.user = null;
       state.auth.token = null;
       // FIXME: DELETE LATER
-      // localStorage.removeItem("userInfo");
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
     },
   },
 });
