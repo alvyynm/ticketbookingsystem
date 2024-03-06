@@ -1,7 +1,7 @@
 import Moment from "moment";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useGetEventsQuery } from "../slices/eventApiSlice";
+import { useGetEventsQuery } from "../app/api/eventApiSlice";
 import { setEvents } from "../slices/eventsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import partyImg1 from "../assets/party.jpg";

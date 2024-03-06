@@ -1,42 +1,57 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useLoginMutation } from "../slices/userApiSlice";
-import { setCredentials } from "../slices/authSlice";
+import { useLoginMutation } from "../app/api/authApiSlice";
+import { setCredentials } from "../features/auth/authSlice";
 
 import Footer from "../components/Footer";
 
 function Login() {
+  const userRef = useRef();
+  const errRef = useRef();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const [login, { isLoading, error }] = useLoginMutation();
 
-  const { userInfo } = useSelector((state) => state.auth);
+  useEffect(() => {
+    // set focus to the user's email when the component loads
+    userRef.current.focus();
+  }, []);
+
+  // const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (userInfo) {
-      navigate("/");
-    }
-  }, [navigate, userInfo]);
+    setErrorMessage("");
+  }, [email, password]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log({
-      email,
-      password,
-    });
 
     try {
-      const res = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...res }));
-      navigate("/");
+      const userData = await login({ email, password }).unwrap();
+      dispatch(setCredentials({ ...userData, email }));
+      setEmail("");
+      setPassword("");
+      navigate("/tickets");
     } catch (err) {
+      if (!err?.originalStatus) {
+        setErrorMessage("No server response");
+      } else if (err.originalStatus?.status === 400) {
+        setErrorMessage("Missing username or password");
+      } else if (err.originalStatus?.status === 401) {
+        setErrorMessage("Unauthorized");
+      } else {
+        setErrorMessage("Login failed");
+      }
       // TODO: display error message using react-toastify
       console.log(err?.data?.message);
+
+      errRef.current.focus();
     }
   };
 
@@ -50,6 +65,12 @@ function Login() {
               <p className="py-6">
                 Sign up to EventMania now and start buying your tickets to great
                 upcoming events. It&apos;s free
+              </p>
+              <p className="py-2">
+                Don&apos;t have an account?{" "}
+                <Link to="/signup" className="link">
+                  Register
+                </Link>
               </p>
             </div>
             <div className="card shrink-0 w-full max-w-sm shadow-2xl bg-base-100">

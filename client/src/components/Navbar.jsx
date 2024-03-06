@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { useLogoutMutation } from "../slices/userApiSlice";
+import { useLogoutMutation } from "../app/api/authApiSlice";
 import { removeCredentials } from "../slices/authSlice";
 
 function Navbar() {
