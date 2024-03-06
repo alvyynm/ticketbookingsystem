@@ -2,8 +2,8 @@ import { useParams } from "react-router-dom";
 import Moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { setTickets } from "../slices/ticketReducer";
-import { useCreateTicketsMutation } from "../slices/ticketApiSlice";
+import { setTickets } from "../features/tickets/ticketsSlice";
+import { useCreateTicketsMutation } from "../app/api/ticketApiSlice";
 import featuredImage from "../assets/party1.jpg";
 import { useState, useEffect } from "react";
 

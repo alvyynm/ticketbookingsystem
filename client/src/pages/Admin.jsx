@@ -1,4 +1,4 @@
-import { useGetEventsQuery } from "../slices/eventApiSlice";
+import { useGetEventsQuery } from "../app/api/eventApiSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { setEvents } from "../slices/eventsSlice";
 import { useEffect, useState } from "react";
