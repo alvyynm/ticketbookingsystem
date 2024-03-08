@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useGetEventsQuery } from "../app/api/eventApiSlice";
 import { setEvents } from "../features/events/eventsSlice";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import partyImg1 from "../assets/party.jpg";
 import partyImg2 from "../assets/party1.jpg";
 import partyImg3 from "../assets/party2.jpg";
@@ -12,10 +12,9 @@ import partyImg4 from "../assets/party3.jpg";
 function EventLists() {
   const { data, isLoading } = useGetEventsQuery();
   const images = [partyImg1, partyImg2, partyImg3, partyImg4];
-  const { events } = useSelector((state) => state.events);
   const dispatch = useDispatch();
 
-  const eventsData = data?.data;
+  let eventsData = data?.data;
 
   useEffect(() => {
     dispatch(setEvents({ data: eventsData }));

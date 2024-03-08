@@ -4,7 +4,7 @@ import { useLogoutMutation } from "../app/api/authApiSlice";
 import { removeCredentials } from "../features/auth/authSlice";
 
 function Navbar() {
-  const { userInfo } = useSelector((state) => state.auth);
+  const { name } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -12,16 +12,16 @@ function Navbar() {
   const [logout, { isLoading, error }] = useLogoutMutation();
 
   const handleLogout = async () => {
-    // logout handler
+    const res = await logout().unwrap();
 
-    try {
-      await logout().unwrap();
+    if (res.status === "success") {
       dispatch(removeCredentials());
       navigate("/");
-    } catch (error) {
-      console.log(error?.data?.message);
+      // reload page after logout
+      window.location.reload(true);
     }
   };
+
   return (
     <nav>
       <div className="navbar bg-base-100 pb-12">
@@ -37,9 +37,9 @@ function Navbar() {
             </li>
             <li>
               <details>
-                <summary>{userInfo ? userInfo.name : "Account"}</summary>
+                <summary>{name ? name : "Account"}</summary>
                 <ul className="p-2 bg-base-100 rounded-t-none">
-                  {userInfo ? (
+                  {name ? (
                     <>
                       <li>
                         <Link to="/profile">Profile</Link>

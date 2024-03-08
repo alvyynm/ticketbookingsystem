@@ -18,18 +18,12 @@ function Admin() {
 
   const dispatch = useDispatch();
   const { data, isLoading } = useGetEventsQuery();
-  console.log("customers", data);
 
   const eventsData = data?.data;
 
   useEffect(() => {
     dispatch(setEvents({ data: eventsData }));
   }, [data]);
-
-  const { events } = useSelector((state) => state.events);
-  console.log("events", eventsData);
-
-  events?.map((event) => console.log(event));
 
   const handleEventEdit = (e) => {
     e.preventDefault();

@@ -1,14 +1,12 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useLoginMutation } from "../app/api/authApiSlice";
 import { setCredentials } from "../features/auth/authSlice";
 
 import Footer from "../components/Footer";
 
 function Login() {
-  const userRef = useRef();
-  const errRef = useRef();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -19,26 +17,30 @@ function Login() {
   const [login, { isLoading, error }] = useLoginMutation();
 
   useEffect(() => {
-    // set focus to the user's email when the component loads
-    userRef.current.focus();
-  }, []);
-
-  // const { userInfo } = useSelector((state) => state.auth);
-
-  useEffect(() => {
     setErrorMessage("");
   }, [email, password]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    let res;
+
     try {
-      const userData = await login({ email, password }).unwrap();
-      dispatch(setCredentials({ ...userData, email }));
+      res = await login({ email, password }).unwrap();
+      dispatch(
+        setCredentials({
+          user: res?.data?.email,
+          accessToken: res?.data?.token,
+          name: res?.data?.name,
+        })
+      );
       setEmail("");
       setPassword("");
-      navigate("/tickets");
+      navigate("/admin");
+      // reload page after login
+      window.location.reload(true);
     } catch (err) {
+      // TODO: display error message using react-toastify
       if (!err?.originalStatus) {
         setErrorMessage("No server response");
       } else if (err.originalStatus?.status === 400) {
@@ -48,10 +50,6 @@ function Login() {
       } else {
         setErrorMessage("Login failed");
       }
-      // TODO: display error message using react-toastify
-      console.log(err?.data?.message);
-
-      errRef.current.focus();
     }
   };
 
