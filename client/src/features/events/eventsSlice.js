@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  eventsData: null,
+  events:
+    localStorage.getItem("events") !== undefined
+      ? localStorage.getItem("events")
+      : null,
 };
 
 const eventsSlice = createSlice({
@@ -9,10 +12,12 @@ const eventsSlice = createSlice({
   initialState,
   reducers: {
     setEvents: (state, action) => {
-      state.events.eventsData = action.payload?.data;
+      state.events = action.payload?.data;
+      localStorage.setItem("events", JSON.stringify(action.payload?.data));
     },
     removeEvents: (state) => {
-      state.events.eventsData = null;
+      state.events = null;
+      localStorage.removeItem("events");
     },
   },
 });

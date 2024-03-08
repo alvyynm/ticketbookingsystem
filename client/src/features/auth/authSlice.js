@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  user: null,
-  token: null,
+  user: localStorage.getItem("user") ? localStorage.getItem("user") : null,
+  name: localStorage.getItem("name") ? localStorage.getItem("name") : null,
+  token: localStorage.getItem("token") ? localStorage.getItem("token") : null,
 };
 
 const authSlice = createSlice({
@@ -10,18 +11,17 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { user, accessToken } = action.payload;
-      state.auth.user = user;
-      state.auth.token = accessToken;
-      // FIXME: DELETE LATER
-      // localStorage.setItem("user", JSON.stringify(user));
-      // localStorage.setItem("token", JSON.stringify(accessToken));
+      const { user, accessToken, name } = action.payload;
+      state.auth = { user: user, token: accessToken, name: name };
+      localStorage.setItem("user", JSON.stringify(user));
+      localStorage.setItem("token", JSON.stringify(accessToken));
+      localStorage.setItem("name", JSON.stringify(name));
     },
-    removeCredentials: (state, action) => {
-      state.auth.user = null;
-      state.auth.token = null;
-      // FIXME: DELETE LATER
-      // localStorage.removeItem("userInfo");
+    removeCredentials: (state) => {
+      state.auth = { user: null, token: null, name: null };
+      localStorage.removeItem("user");
+      localStorage.removeItem("token");
+      localStorage.removeItem("name");
     },
   },
 });

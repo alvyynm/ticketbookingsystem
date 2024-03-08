@@ -80,7 +80,12 @@ app.disable("x-powered-by");
 app.use(bodyParser.json());
 
 // Prevent cors errors
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 app.use((req, res, next) => {
   // Log an info message for each incoming request
