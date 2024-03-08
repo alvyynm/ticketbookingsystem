@@ -1,9 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  events: localStorage.getItem("events")
-    ? JSON.parse(localStorage.getItem("events"))
-    : null,
+  events:
+    localStorage.getItem("events") !== undefined
+      ? localStorage.getItem("events")
+      : null,
 };
 
 const eventsSlice = createSlice({
