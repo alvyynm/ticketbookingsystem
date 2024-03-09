@@ -72,6 +72,8 @@ There's also a one-to-many (1:M) relationship between events and tickets i.e. an
 
 ![Database Design](./static/img/database-design.png)
 
+In this system, the database is an important component because aside from storing the data, it also helps in enforcing relationships—for example, constraints between tickets and events.
+
 ## API Endpoints and Architecture
 
 The API gateway has three major endpoints: `/events`, `/tickets`, and `/auth`. They relate to events, tickets, and authentication, respectively.
