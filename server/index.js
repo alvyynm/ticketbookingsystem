@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 const cors = require("cors");
 const compression = require("compression");
 const winston = require("winston");
+const helmet = require("helmet");
 require("dotenv").config({ path: `${process.cwd()}/.env` });
 const port = process.env.PORT || 4000;
 
@@ -86,6 +87,8 @@ app.use(
     credentials: true,
   })
 );
+
+app.use(helmet());
 
 app.use((req, res, next) => {
   // Log an info message for each incoming request
