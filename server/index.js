@@ -6,6 +6,7 @@ const compression = require("compression");
 const winston = require("winston");
 const helmet = require("helmet");
 require("dotenv").config({ path: `${process.cwd()}/.env` });
+const corsOptions = require("./config/corsOptions");
 const port = process.env.PORT || 4000;
 
 // import routes
@@ -81,12 +82,7 @@ app.disable("x-powered-by");
 app.use(bodyParser.json());
 
 // Prevent cors errors
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 
 app.use(helmet());
 
