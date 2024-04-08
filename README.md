@@ -14,6 +14,10 @@ Here are the requirements.
 
 - The user should then be able to get an email notification for the successful reservation.
 
+
+## System Design 
+
+For the full system design features, and the entire process of building the API, refer to the `system-design-doc.md` file.
 ## Usage
 
 1. Download the code and cd into the directory:
