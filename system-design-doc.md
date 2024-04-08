@@ -135,3 +135,14 @@ The `UserEvent` table is a joint table for implementing a `M:M` relationship bet
 The API gateway has three major endpoints: `/events`, `/tickets`, and `/auth`. They relate to events, tickets, and authentication, respectively.
 
 The events endpoint allows users to perfom CRUD operations on events. The auth endpoint allows users to login into the system using an email and password. Lastly, the tickets endpoint allows users to reserve tickets for events.
+
+
+## API Performance Optimization
+
+### 1.0 Caching
+
+To provide better performance, caching is used. This is because this is a read-heavy API whereby the number of read requests is higher than the number of write requests (create, update, delete calls). For caching, Redis in-memory cache is used to cache all idempotent requests. 
+
+In the ticketbookingsystem API, read requests to events data are cached  to Redis when a first request is made. Subsequent requests to the API are then served from the cache, which ensures better read perfomance relative to reading from slower database storage.
+
+A middleware function is used for implenting this functionality. 
