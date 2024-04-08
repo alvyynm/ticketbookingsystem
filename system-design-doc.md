@@ -45,7 +45,7 @@ The database store information about all users in the system and also the data. 
 
 ## Basic Abstractions in the Ticket Booking System
 
-From the requirements, the system should is made up of several abstractions.
+From the requirements, the system is made up of several abstractions.
 
 These include:
 
